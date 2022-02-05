@@ -1,48 +1,49 @@
 function units (number) {
-    switch(number) {
-        case 1: {
-            return 'one'
-            break;
+        switch(number) {
+            case 1: {
+                return 'one'
+                break;
+            }
+            case 2: {
+                return 'two'
+                break;
+            }
+            case 3: {
+                return 'three'
+                break;
+            }
+            case 4: {
+                return 'four'
+                break;
+            }
+            case 5: {
+                return 'five'
+                break;
+            }
+            case 6: {
+                return 'six'
+                break;
+            }
+            case 7: {
+                return 'seven'
+                break;
+            }
+            case 8: {
+                return 'eight'
+                break;
+            }
+            case 9: {
+                return 'nine'
+                break;
+            }
+            case 0: {
+                return 'zero'
+                break;
+            }
+            
         }
-        case 2: {
-            return 'two'
-            break;
-        }
-        case 3: {
-            return 'three'
-            break;
-        }
-        case 4: {
-            return 'four'
-            break;
-        }
-        case 5: {
-            return 'five'
-            break;
-        }
-        case 6: {
-            return 'six'
-            break;
-        }
-        case 7: {
-            return 'seven'
-            break;
-        }
-        case 8: {
-            return 'eight'
-            break;
-        }
-        case 9: {
-            return 'nine'
-            break;
-        }
-        case 0: {
-            return 'zero'
-            break;
-        }
-          
-    }
-}
+    } 
+
 
 
 function sec (number) {
@@ -93,6 +94,7 @@ function sec (number) {
 
 function dozens(number) {
     let str = number.toString();
+    if(str[1] != 0) {
         switch(str[0]) {
             case '2': {
                 return 'twenty ' + units(number % 10) 
@@ -103,7 +105,7 @@ function dozens(number) {
                 break;
             }
             case '4': {
-                return 'fourty ' + units(number % 10)
+                return 'forty ' + units(number % 10)
                 break;
             }
             case '5': {
@@ -131,12 +133,46 @@ function dozens(number) {
                 break;
             }
         }
+    } else {
+        switch(str[0]) {
+            case '2': {
+                return 'twenty'
+                break;
+            }
+            case '3': {
+                return 'thirty'
+                break;
+            }
+            case '4': {
+                return 'forty'
+                break;
+            }
+            case '5': {
+                return 'fifty'
+                break;
+            }
+            case '6': {
+                return 'sixty'
+                break;
+            }
+            case '7': {
+                return 'seventy'
+                break;
+            }
+            case '8': {
+                return 'eighty'
+                break;
+            }
+            case '9': {
+                return 'ninety'
+                break;
+            }
+        }
+    }
 }
 
-
-
-
 module.exports = function toReadable (number) {
+    let strTwo = number.toString();
     if (number >= 0 && number < 10){
         return units(number)
     }
@@ -149,9 +185,27 @@ module.exports = function toReadable (number) {
         return dozens(number)
     }
 
-    if(number >= 100) {
-        return units(Math.floor(number / 100)) + ' hundred ' + dozens(number % 100)
+    if(number > 100 && strTwo[1] != 0 && strTwo[1] != 1 && strTwo[2] != 0) {
+        return units(Math.floor(number / 100)) + ' hundred ' + dozens(number % 100) // работает 121, 234
+    }
+
+    if(number > 100 && strTwo[1] != 0 && strTwo[1] != 1 && strTwo[2] == 0) {
+        return units(Math.floor(number / 100)) + ' hundred ' + dozens(number % 100) // работает(120,240,570), кроме 110, 210, 310
+    }
+
+    if(number > 100 && strTwo[1] == 1 && strTwo[2] == 0) {
+        return units(Math.floor(number / 100)) + ' hundred ' + sec(number % 100)
+    }
+
+    if(number > 100 && strTwo[1] == 1 && strTwo[2] != 0) {
+        return units(Math.floor(number / 100)) + ' hundred ' + sec(number % 100) // работает 119, 117, 115
+    }
+
+    if(number >= 100 && strTwo[1] == 0 && strTwo[2] == 0) {  //работает (100, 200, 300...)
+        return units(number / 100) + ' hundred'
+    }
+
+    if(number >= 100 && strTwo[1] == 0 && strTwo[2] != 0) {     
+        return units(Math.floor(number / 100)) + ' hundred ' + units(number % 10)    // работает (101, 102, 103...)
     }
 }
-
-
